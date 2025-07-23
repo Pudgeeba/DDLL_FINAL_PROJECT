@@ -10,15 +10,20 @@ const targetProducts = [
 ];
 
 window.addEventListener("DOMContentLoaded", () => {
-    fetch("DATASET-Livestock.xlsx")
-        .then(response => response.arrayBuffer())
-        .then(buffer => {
-            const workbook = XLSX.read(buffer, { type: "array" });
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-            processExcelData(jsonData);
-        });
-});
+    fetch('DATASET-Livestock.xlsx')
+  .then(response => response.arrayBuffer())
+  .then(data => {
+    const workbook = XLSX.read(data, { type: 'array' });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+    console.log(jsonData); // This should now log your data
+    // Continue chart generation here...
+  })
+  .catch(error => {
+    console.error('Error loading Excel file:', error);
+  });
+
 
 function processExcelData(data) {
     const headers = data[1].map(h => String(h).trim());
